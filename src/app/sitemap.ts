@@ -1,14 +1,15 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
-import { legalNav, mainNav } from "@/config/navigation";
+import { mainNav, secondaryNav } from "@/config/navigation";
 import { services } from "@/content/services";
+import { doctors } from "@/content/doctors";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths = [
     ...mainNav.map((n) => n.href),
-    "/rendez-vous",
     ...services.map((s) => `/services/${s.slug}`),
-    ...legalNav.map((n) => n.href),
+    ...doctors.map((d) => `/medecins/${d.id}`),
+    ...secondaryNav.map((n) => n.href),
   ];
   return paths.map((path) => ({
     url: new URL(path, siteConfig.url).toString(),

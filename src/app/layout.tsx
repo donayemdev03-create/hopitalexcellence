@@ -1,23 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Lexend, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
-import { DraftBanner } from "@/components/layout/DraftBanner";
-import { EmergencyBar } from "@/components/layout/EmergencyBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { MobileActionBar } from "@/components/layout/MobileActionBar";
 
-// Police provisoire : à remplacer par celle de la maquette.
-const bodyFont = Inter({
-  variable: "--font-body",
+// Polices de la maquette : Lexend (titres) et Source Sans 3 (texte).
+const lexend = Lexend({
+  variable: "--font-lexend",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: siteConfig.name,
+    default: `${siteConfig.name} — ${siteConfig.tagline}`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -31,26 +38,26 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b5cad",
+  themeColor: "#1a56cf",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${bodyFont.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">
+    <html lang="fr" className={`${lexend.variable} ${sourceSans.variable}`}>
+      <body className="flex min-h-screen flex-col bg-white pb-[84px] sm:pb-0">
         <a
           href="#contenu"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-on-primary"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2"
         >
-          Aller au contenu principal
+          Aller au contenu
         </a>
-        {siteConfig.isDraft && <DraftBanner />}
-        <EmergencyBar />
         <Header />
-        <main id="contenu" className="flex-1">
+        <main id="contenu" tabIndex={-1} className="flex-1 focus:outline-hidden">
           {children}
         </main>
         <Footer />
+        <MobileActionBar />
       </body>
     </html>
   );

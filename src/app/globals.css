@@ -1,76 +1,164 @@
 @import "tailwindcss";
 
 /*
- * Jetons de design (design tokens).
- *
- * ⚠️ Palette et typographie PROVISOIRES : elles seront alignées sur la maquette
- * fournie par le client. Modifier uniquement les valeurs ci-dessous — tous les
- * composants utilisent ces jetons (ex. `bg-primary`, `text-muted`), jamais des
- * couleurs codées en dur.
+ * Jetons de design — repris à l'identique de la maquette (tailwind.config.js).
+ *   brand : bleu médical (couleur principale)
+ *   navy  : bleu foncé (titres, fonds sombres)
+ *   care  : vert (actions clés : « Prendre rendez-vous »)
+ *   alert : rouge (urgences)
+ *   ink   : gris-bleu (textes)
+ *   mist  : fond clair des sections
+ * Tous les composants utilisent ces jetons (ex. `bg-brand-600`, `text-ink-500`).
  */
 @theme {
-  --color-primary: #0b5cad;
-  --color-primary-hover: #094c8f;
-  --color-primary-soft: #e8f1fb;
-  --color-on-primary: #ffffff;
+  --color-brand-50: #eef5ff;
+  --color-brand-100: #d9e8ff;
+  --color-brand-200: #b5d1fe;
+  --color-brand-300: #84b2fb;
+  --color-brand-400: #4f8cf5;
+  --color-brand-500: #2a6de8;
+  --color-brand-600: #1a56cf;
+  --color-brand-700: #1745a8;
+  --color-brand-800: #173c87;
+  --color-brand-900: #16336b;
 
-  --color-secondary: #0f8a7e;
-  --color-secondary-soft: #e6f5f3;
+  --color-navy-700: #12305a;
+  --color-navy-800: #0d2447;
+  --color-navy-900: #0a1b36;
+  --color-navy-950: #06122a;
 
-  --color-emergency: #b42318;
-  --color-emergency-soft: #fdecea;
-  --color-on-emergency: #ffffff;
+  --color-care-50: #e9fbf6;
+  --color-care-100: #c9f4e8;
+  --color-care-500: #12a889;
+  --color-care-600: #0b8e74;
+  --color-care-700: #0a735f;
 
-  --color-surface: #ffffff;
-  --color-surface-alt: #f5f7fa;
-  --color-border: #d9e0e8;
-  --color-foreground: #14212f;
-  --color-muted: #4a5a6b;
+  --color-alert-50: #fff1f1;
+  --color-alert-100: #ffdcdc;
+  --color-alert-500: #e03b3b;
+  --color-alert-600: #c62828;
+  --color-alert-700: #a21f1f;
+  --color-alert-900: #8f1b1b;
 
-  --color-success: #1a7f37;
-  --color-warning-soft: #fff6d6;
+  --color-ink-400: #7c8aa3;
+  --color-ink-500: #5d6b84;
+  --color-ink-600: #44526a;
+  --color-ink-700: #2e3a50;
+  --color-ink-900: #101a2c;
 
-  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  /* --font-display : police de titres optionnelle (à définir d'après la maquette). */
-  --font-heading: var(--font-display, var(--font-body)), ui-sans-serif, system-ui, sans-serif;
+  --color-mist: #f4f8fd;
 
-  --radius-card: 1rem;
-  --container-site: 72rem;
+  --font-display: var(--font-lexend), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgba(13, 36, 71, 0.05), 0 8px 24px -12px rgba(13, 36, 71, 0.14);
+  --shadow-lift: 0 2px 4px rgba(13, 36, 71, 0.06), 0 18px 40px -16px rgba(13, 36, 71, 0.24);
+
+  --radius-xl2: 1.125rem;
+
+  --animate-fade-up: fadeUp 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-pulse-ring: pulseRing 1.8s ease-out infinite;
+
+  @keyframes fadeUp {
+    0% {
+      opacity: 0.001;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes pulseRing {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      transition-duration: 0.01ms !important;
-      animation-duration: 0.01ms !important;
-    }
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background-color: var(--color-surface);
-    color: var(--color-foreground);
+    background-color: #fff;
+    color: var(--color-ink-700);
     font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color-scheme: light;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    font-family: var(--font-heading);
+    font-family: var(--font-display);
+    color: var(--color-navy-900);
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-primary);
+    outline: 3px solid var(--color-brand-400);
     outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: var(--color-brand-100);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[0.8rem] font-semibold tracking-[0.12em] text-brand-600 uppercase;
+  }
+  .card {
+    @apply rounded-xl2 border border-slate-200/70 bg-white shadow-card;
+  }
+  .field-label {
+    @apply mb-1.5 block text-[0.95rem] font-semibold text-navy-800;
+  }
+  .field {
+    @apply block min-h-[48px] w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-ink-900 transition placeholder:text-ink-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100 focus:outline-hidden;
+  }
+  .field-error {
+    @apply border-alert-500 focus:border-alert-500 focus:ring-alert-100;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

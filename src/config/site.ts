@@ -1,53 +1,76 @@
 /**
  * Configuration centrale de l'établissement.
  *
- * ⚠️ TOUTES les valeurs ci-dessous sont PROVISOIRES (placeholders).
- * Elles doivent être remplacées par les informations officielles de l'hôpital
- * avant toute mise en production. Tant que `isDraft` vaut `true` :
- *   - un bandeau « contenu provisoire » est affiché en haut du site ;
+ * ⚠️ Les coordonnées, l'année de création et la ville sont des PLACEHOLDERS
+ * (entre crochets) à remplacer par les informations officielles.
+ * Les textes et horaires repris de la maquette sont des EXEMPLES à valider.
+ *
+ * Tant que `isDraft` vaut `true` :
+ *   - une mention « contenus provisoires » est affichée dans le pied de page ;
  *   - les moteurs de recherche sont invités à ne pas indexer le site.
  */
+
+export type Phone = {
+  /** Texte affiché. */
+  display: string;
+  /** Numéro au format international pour les liens `tel:` ; vide = pas de lien. */
+  href: string;
+};
+
 export const siteConfig = {
   /** Passer à `false` uniquement quand tous les contenus réels sont en place. */
   isDraft: true,
 
-  /** Nom provisoire (reprend le nom du dépôt). */
   name: "Hôpital Excellence",
-  shortName: "H. Excellence",
-  tagline: "[Slogan de l'établissement à définir]",
+  shortName: "Excellence",
+  /** Slogan repris de la maquette. */
+  tagline: "Votre santé, notre priorité",
   description:
-    "[Description de l'établissement à rédiger : présentation courte de l'hôpital, de ses missions et de ses spécialités.]",
+    "Hôpital général : médecins spécialistes, urgences 24 h/24, laboratoire et imagerie sous un même toit, pour des soins sûrs et humains.",
+  foundedYear: "[année]",
 
   /** URL publique du site. Définie via la variable d'environnement NEXT_PUBLIC_SITE_URL. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   locale: "fr_FR",
 
+  /** Logo : `null` = logo généré (croix + nom). Sinon chemin dans /public, ex. "/images/logo.svg". */
+  logo: null as string | null,
+
+  /** Disponibilité des urgences, affichée dans tout le site (à confirmer). */
+  emergencyAvailability: "24 h/24 · 7 j/7",
+
   contact: {
-    /** Numéros fictifs — format affiché et format « tel: ». */
-    phone: { display: "00 00 00 00 00", href: "+33000000000" },
-    emergencyPhone: { display: "[Numéro d'urgence]", href: "" },
+    phone: { display: "[Numéro du standard]", href: "" } as Phone,
+    emergencyPhone: { display: "[Numéro des urgences]", href: "" } as Phone,
+    whatsapp: { display: "[Numéro WhatsApp]", href: "" } as Phone,
     /** Domaine « example.org » réservé : aucune adresse réelle. */
     email: "contact@example.org",
     address: {
-      street: "[Adresse à compléter]",
-      postalCode: "[Code postal]",
+      street: "[Adresse]",
+      district: "[Quartier]",
       city: "[Ville]",
       country: "[Pays]",
     },
+    /** Lien Google Maps (itinéraire) ; vide = bouton masqué. */
+    mapUrl: "",
   },
 
-  hours: [
-    { label: "Urgences", value: "[Horaires à confirmer]" },
-    { label: "Consultations", value: "[Horaires à confirmer]" },
-    { label: "Visites", value: "[Horaires à confirmer]" },
-  ],
-
-  social: [] as { label: string; href: string }[],
+  /** Réseaux sociaux : laisser vide pour masquer l'icône. */
+  socials: {
+    facebook: "",
+    instagram: "",
+    linkedin: "",
+  },
 } as const;
 
 export type SiteConfig = typeof siteConfig;
 
-export function formatAddress(separator = ", ") {
-  const { street, postalCode, city, country } = siteConfig.contact.address;
-  return [street, `${postalCode} ${city}`, country].join(separator);
+export function formatAddress() {
+  const { street, district, city, country } = siteConfig.contact.address;
+  return { line1: street, line2: `${district}, ${city}, ${country}` };
+}
+
+/** Lien `tel:` ou `undefined` si le numéro n'est pas encore renseigné. */
+export function telHref(phone: Phone) {
+  return phone.href ? `tel:${phone.href}` : undefined;
 }

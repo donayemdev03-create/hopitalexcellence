@@ -30,12 +30,11 @@ export function hospitalJsonLd() {
     name: siteConfig.name,
     description: siteConfig.description,
     url: siteConfig.url,
-    telephone: contact.phone.href,
+    ...(contact.phone.href ? { telephone: contact.phone.href } : {}),
     email: contact.email,
     address: {
       "@type": "PostalAddress",
       streetAddress: contact.address.street,
-      postalCode: contact.address.postalCode,
       addressLocality: contact.address.city,
       addressCountry: contact.address.country,
     },

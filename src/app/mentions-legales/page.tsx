@@ -1,7 +1,6 @@
 import { formatAddress, siteConfig } from "@/config/site";
 import { pageMetadata } from "@/lib/seo";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Section } from "@/components/ui/Section";
+import { PageHero } from "@/components/sections/Sections";
 import { Prose } from "@/components/ui/Prose";
 
 export const metadata = pageMetadata({
@@ -13,8 +12,9 @@ export const metadata = pageMetadata({
 export default function LegalPage() {
   return (
     <>
-      <PageHeader title="Mentions légales" breadcrumbs={[{ label: "Mentions légales" }]} />
-      <Section>
+      <PageHero eyebrow="Informations légales" title="Mentions légales" crumbs={[{ label: "Mentions légales" }]} />
+      <section className="section">
+        <div className="container-x">
         <Prose>
           <p>
             <strong>Modèle à compléter et à faire valider</strong> par le service juridique de l&apos;établissement.
@@ -23,7 +23,7 @@ export default function LegalPage() {
           <p>
             {siteConfig.name} — [forme juridique, numéro d&apos;identification]
             <br />
-            {formatAddress()}
+            {formatAddress().line1}, {formatAddress().line2}
           </p>
           <h2>Directeur de la publication</h2>
           <p>[Nom et fonction]</p>
@@ -32,7 +32,8 @@ export default function LegalPage() {
           <h2>Propriété intellectuelle</h2>
           <p>[Conditions d&apos;utilisation des contenus, crédits photos.]</p>
         </Prose>
-      </Section>
+      </div>
+      </section>
     </>
   );
 }

@@ -26,51 +26,60 @@ sitemap, Open Graph).
 
 ## Structure
 
+Le design reproduit la maquette fournie (prototype React + Vite) : palette, polices (Lexend / Source Sans 3),
+icônes Lucide, illustrations, mise en page et comportements (menu tiroir mobile, barre d'actions mobile, horaires
+« ouvert maintenant », filtres des médecins, créneaux horaires…).
+
 ```
 src/
 ├── app/                      Pages (App Router)
 │   ├── page.tsx              Accueil
-│   ├── a-propos/             L'hôpital
+│   ├── a-propos/             À propos
 │   ├── services/             Liste + page de chaque service ([slug])
-│   ├── medecins/             Annuaire filtrable
+│   ├── medecins/             Annuaire filtrable + profil de chaque médecin ([id])
 │   ├── rendez-vous/          Formulaire de demande (démonstration)
-│   ├── informations-patients/
-│   ├── actualites/
-│   ├── contact/
-│   ├── mentions-legales/  confidentialite/
-│   ├── sitemap.ts  robots.ts  manifest.ts  not-found.tsx
-│   ├── layout.tsx            Gabarit global (en-tête, bandeau urgences, pied de page, SEO)
-│   └── globals.css           Jetons de design (couleurs, polices, rayons)
+│   ├── contact/              Coordonnées, carte, horaires, formulaire de contact (démonstration)
+│   ├── informations-patients/  actualites/  mentions-legales/  confidentialite/
+│   ├── sitemap.ts  robots.ts  manifest.ts  not-found.tsx  template.tsx
+│   ├── layout.tsx            Gabarit global (polices, en-tête, pied de page, barre mobile, SEO)
+│   └── globals.css           Jetons de design de la maquette (couleurs, ombres, animations)
 ├── components/
-│   ├── layout/               Header, Footer, EmergencyBar, Logo…
-│   ├── ui/                   Container, Button, Section, Card, PageHeader, ImagePlaceholder…
-│   ├── appointment/          Formulaire de rendez-vous
-│   └── doctors/              Carte et annuaire des médecins
+│   ├── layout/               Header (barre infos + menu tiroir), Footer, MobileActionBar
+│   ├── sections/             PageHero, horaires, urgences, témoignages, contact rapide, chiffres, CTA
+│   ├── ui/                   Button, Logo, Icon, SectionHeading, ServiceCard, FormField, Photo…
+│   ├── illustrations/        Bâtiment, portraits, plan (emplacements d'images)
+│   ├── appointment/  contact/  doctors/
 ├── config/
-│   ├── site.ts               ★ Identité et coordonnées de l'hôpital
+│   ├── site.ts               ★ Identité, coordonnées, réseaux sociaux
+│   ├── hours.ts              ★ Horaires, créneaux de rendez-vous
+│   ├── images.ts             ★ Photos (hero, à propos)
 │   └── navigation.ts         Menus
-├── content/                  ★ Services, médecins, actualités
+├── content/                  ★ Services, médecins, chiffres/valeurs/témoignages, actualités
 └── lib/
     ├── seo.ts                Métadonnées et JSON-LD schema.org « Hospital »
-    └── appointment/          Schéma de validation (Zod), action serveur, point d'envoi
+    ├── appointment/  contact/  Schémas de validation (Zod), actions serveur, points d'envoi
 ```
 
 ## Remplacer les contenus provisoires
 
-1. **Identité et coordonnées** : `src/config/site.ts` (nom, téléphone, urgences, adresse, e-mail, horaires).
-2. **Services, médecins, actualités** : fichiers de `src/content/`.
-3. **Textes des pages** : rechercher `[` dans `src/app/` pour trouver les zones à rédiger.
-4. **Images** : déposer les fichiers dans `public/images/` et remplacer chaque `<ImagePlaceholder>` par `next/image`.
-5. **Logo** : `src/components/layout/Logo.tsx`.
-6. **Design d'après la maquette** : couleurs et polices dans `src/app/globals.css` (bloc `@theme`) et police dans
-   `src/app/layout.tsx`. Les composants n'utilisent que ces jetons (`bg-primary`, `text-muted`…).
-7. Une fois tout validé : passer `isDraft` à `false`.
+1. **Identité et coordonnées** : `src/config/site.ts` (téléphones, WhatsApp, e-mail, adresse, lien Maps, réseaux sociaux).
+   Tant qu'un numéro est vide, les boutons d'appel correspondants sont inactifs.
+2. **Horaires et créneaux** : `src/config/hours.ts` (repris de la maquette, à confirmer).
+3. **Services, médecins, chiffres, historique, témoignages** : fichiers de `src/content/`.
+   Les témoignages ne doivent être publiés qu'avec l'accord écrit des patients.
+4. **Textes des pages** : rechercher `[` dans `src/` pour trouver les zones à compléter.
+5. **Photos** : déposer les fichiers dans `public/images/` puis renseigner `src/config/images.ts`
+   (et `photo` pour chaque médecin). Tant qu'une valeur vaut `null`, une illustration s'affiche.
+6. **Logo** : `siteConfig.logo` dans `src/config/site.ts`.
+7. **Carte** : remplacer `MapPlaceholder` (page Contact) par un `<iframe>` Google Maps.
+8. Une fois tout validé : passer `isDraft` à `false`.
 
-## Formulaire de rendez-vous
+## Formulaires (rendez-vous et contact)
 
 - Validation côté navigateur **et** côté serveur, avec le même schéma (`src/lib/appointment/schema.ts`).
 - Fonctionne aussi sans JavaScript (action serveur React).
 - **Mode démonstration** : aucune donnée n'est envoyée ni stockée. Pour brancher un e-mail ou une base de données,
-  modifier uniquement `submitAppointmentRequest` dans `src/lib/appointment/submit.ts`.
+  modifier uniquement `submitAppointmentRequest` dans `src/lib/appointment/submit.ts`
+  (et `submitContactMessage` dans `src/lib/contact/submit.ts` pour le formulaire de contact).
 - Les données de santé sont soumises au RGPD et à des règles d'hébergement spécifiques : à valider avant la mise en
   production.

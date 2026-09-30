@@ -1,20 +1,21 @@
+import { BedDouble, ClipboardList, DoorOpen, HandCoins, Scale, Users } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { CtaBand, PageHero } from "@/components/sections/Sections";
 
 export const metadata = pageMetadata({
   title: "Informations patients",
-  description: "Admission, séjour, visites et questions fréquentes.",
+  description: "Admission, séjour, visites, frais et droits des patients : tout pour préparer votre venue.",
   path: "/informations-patients",
 });
 
 const topics = [
-  { id: "admission", title: "Admission", text: "[Démarches d'admission et documents à prévoir.]" },
-  { id: "sejour", title: "Votre séjour", text: "[Informations sur le séjour : chambre, repas, effets personnels.]" },
-  { id: "visites", title: "Visites", text: "[Horaires et règles de visite.]" },
-  { id: "frais", title: "Frais et prise en charge", text: "[Tarifs, prise en charge, mutuelles et assurances.]" },
-  { id: "sortie", title: "Votre sortie", text: "[Formalités de sortie et suivi.]" },
-  { id: "droits", title: "Droits des patients", text: "[Droits, réclamations, accès au dossier médical.]" },
+  { id: "admission", icon: ClipboardList, title: "Admission", text: "[Démarches d'admission et documents à prévoir.]" },
+  { id: "sejour", icon: BedDouble, title: "Votre séjour", text: "[Informations sur le séjour : chambre, repas, effets personnels.]" },
+  { id: "visites", icon: Users, title: "Visites", text: "[Horaires et règles de visite.]" },
+  { id: "frais", icon: HandCoins, title: "Frais et prise en charge", text: "[Tarifs, prise en charge, mutuelles et assurances.]" },
+  { id: "sortie", icon: DoorOpen, title: "Votre sortie", text: "[Formalités de sortie et suivi.]" },
+  { id: "droits", icon: Scale, title: "Droits des patients", text: "[Droits, réclamations, accès au dossier médical.]" },
 ];
 
 const faq = [
@@ -26,38 +27,45 @@ const faq = [
 export default function PatientInfoPage() {
   return (
     <>
-      <PageHeader
+      <PageHero
+        eyebrow="Patients"
         title="Informations patients"
-        intro="Tout ce qu'il faut savoir pour préparer votre venue."
-        breadcrumbs={[{ label: "Informations patients" }]}
+        text="Tout ce qu’il faut savoir pour préparer votre venue."
+        crumbs={[{ label: "Informations patients" }]}
       />
-      <Section>
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {topics.map((t) => (
-            <li key={t.id} id={t.id} className="scroll-mt-24 rounded-card border border-border p-6">
-              <h2 className="text-lg font-semibold">{t.title}</h2>
-              <p className="mt-2 text-sm text-muted">{t.text}</p>
+      <section className="section">
+        <ul className="container-x grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {topics.map(({ id, icon: I, title, text }) => (
+            <li key={id} id={id} className="card scroll-mt-28 p-6">
+              <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-50 text-brand-600">
+                <I aria-hidden="true" className="h-6 w-6" />
+              </span>
+              <h2 className="mt-5 text-xl font-semibold">{title}</h2>
+              <p className="mt-2 text-ink-500">{text}</p>
             </li>
           ))}
         </ul>
-      </Section>
-      <Section id="faq" title="Questions fréquentes" tone="alt">
-        <div className="max-w-3xl space-y-3">
-          {faq.map((item, i) => (
-            <details key={i} className="group rounded-card bg-surface p-5 shadow-sm">
-              <summary className="cursor-pointer list-none font-semibold marker:hidden">
-                <span className="flex items-center justify-between gap-4">
+      </section>
+      <section className="section bg-mist">
+        <div className="container-x">
+          <SectionHeading eyebrow="FAQ" title="Questions fréquentes" />
+          <div className="max-w-3xl space-y-3">
+            {faq.map((item, i) => (
+              <details key={i} className="card group p-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display font-semibold text-navy-900 [&::-webkit-details-marker]:hidden">
                   {item.q}
-                  <span aria-hidden="true" className="text-primary transition-transform group-open:rotate-45">
+                  <span aria-hidden="true" className="text-xl text-brand-600 transition-transform group-open:rotate-45">
                     +
                   </span>
-                </span>
-              </summary>
-              <p className="mt-3 text-muted">{item.a}</p>
-            </details>
-          ))}
+                </summary>
+                <p className="mt-3 text-ink-600">{item.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
+      <div className="pt-16 sm:pt-20" />
+      <CtaBand />
     </>
   );
 }

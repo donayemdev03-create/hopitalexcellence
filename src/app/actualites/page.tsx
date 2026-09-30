@@ -1,8 +1,7 @@
 import { news } from "@/content/news";
 import { pageMetadata } from "@/lib/seo";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Section } from "@/components/ui/Section";
 import { NewsList } from "@/components/NewsList";
+import { CtaBand, PageHero } from "@/components/sections/Sections";
 
 export const metadata = pageMetadata({
   title: "Actualités",
@@ -13,10 +12,18 @@ export const metadata = pageMetadata({
 export default function NewsPage() {
   return (
     <>
-      <PageHeader title="Actualités" breadcrumbs={[{ label: "Actualités" }]} />
-      <Section>
-        <NewsList items={news} />
-      </Section>
+      <PageHero
+        eyebrow="Actualités"
+        title="Actualités de l’hôpital"
+        text="Nouveaux services, campagnes de dépistage, événements."
+        crumbs={[{ label: "Actualités" }]}
+      />
+      <section className="section">
+        <div className="container-x">
+          <NewsList items={news} />
+        </div>
+      </section>
+      <CtaBand />
     </>
   );
 }

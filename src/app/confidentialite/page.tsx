@@ -1,6 +1,5 @@
 import { pageMetadata } from "@/lib/seo";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Section } from "@/components/ui/Section";
+import { PageHero } from "@/components/sections/Sections";
 import { Prose } from "@/components/ui/Prose";
 
 export const metadata = pageMetadata({
@@ -12,8 +11,9 @@ export const metadata = pageMetadata({
 export default function PrivacyPage() {
   return (
     <>
-      <PageHeader title="Politique de confidentialité" breadcrumbs={[{ label: "Confidentialité" }]} />
-      <Section>
+      <PageHero eyebrow="Informations légales" title="Politique de confidentialité" crumbs={[{ label: "Confidentialité" }]} />
+      <section className="section">
+        <div className="container-x">
         <Prose>
           <p>
             <strong>Modèle à compléter et à faire valider</strong> par le délégué à la protection des données (DPO) de
@@ -38,7 +38,8 @@ export default function PrivacyPage() {
           <h2>Cookies</h2>
           <p>Ce site n&apos;utilise actuellement aucun cookie de mesure d&apos;audience ou publicitaire.</p>
         </Prose>
-      </Section>
+      </div>
+      </section>
     </>
   );
 }
