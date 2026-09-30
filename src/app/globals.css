@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/*
+ * Jetons de design (design tokens).
+ *
+ * ⚠️ Palette et typographie PROVISOIRES : elles seront alignées sur la maquette
+ * fournie par le client. Modifier uniquement les valeurs ci-dessous — tous les
+ * composants utilisent ces jetons (ex. `bg-primary`, `text-muted`), jamais des
+ * couleurs codées en dur.
+ */
+@theme {
+  --color-primary: #0b5cad;
+  --color-primary-hover: #094c8f;
+  --color-primary-soft: #e8f1fb;
+  --color-on-primary: #ffffff;
+
+  --color-secondary: #0f8a7e;
+  --color-secondary-soft: #e6f5f3;
+
+  --color-emergency: #b42318;
+  --color-emergency-soft: #fdecea;
+  --color-on-emergency: #ffffff;
+
+  --color-surface: #ffffff;
+  --color-surface-alt: #f5f7fa;
+  --color-border: #d9e0e8;
+  --color-foreground: #14212f;
+  --color-muted: #4a5a6b;
+
+  --color-success: #1a7f37;
+  --color-warning-soft: #fff6d6;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  /* --font-display : police de titres optionnelle (à définir d'après la maquette). */
+  --font-heading: var(--font-display, var(--font-body)), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 1rem;
+  --container-site: 72rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
